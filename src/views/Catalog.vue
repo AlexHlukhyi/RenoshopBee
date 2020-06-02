@@ -3,11 +3,11 @@
     <main>
       <div class="container">
         <ul class="breadcrumbs">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Catalog</a></li>
+          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/catalog">Catalog</router-link></li>
         </ul>
         <div class="catalog wrapper">
-          <div id="filters" class="filters">
+          <div class="filters" :class="(showFilters)?'active':''">
             <div class="categories-filter">
               <h5>CATEGORIES</h5>
               <ul>
@@ -61,77 +61,19 @@
               </select>
             </div>
             <div class="items wrapper">
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Cruise Dual Analog</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Crown Summit Backpack</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Joust Duffle Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Voyage Yoga Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Joust Duffle Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Cruise Dual Analog</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Crown Summit Backpack</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Joust Duffle Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Voyage Yoga Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Joust Duffle Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Voyage Yoga Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
-              </div>
-              <div class="product small"><img class="small-image"/>
-                <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-                  <h5>Joust Duffle Bag</h5></a>
-                <div class="price">250.00</div>
-                <div class="marks wrapper"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+              <div class="product small" :key="product.id" v-for="product in products"><img/>
+                <div class="actions">
+                  <a href="#" class="action"><i class="fas fa-shopping-cart"></i></a>
+                  <a href="#" class="action"><i class="fas fa-heart"></i></a>
+                  <a href="#" class="action"><i class="fas fa-retweet"></i></a>
+                </div>
+                <router-link to="/product">
+                  <h5>{{ product.name }}</h5>
+                </router-link>
+                <div class="price">{{ product.price }}</div>
+                <div class="marks wrapper">
+                  <i :class="(product.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
+                </div>
               </div>
             </div>
             <div class="pages wrapper">
@@ -147,5 +89,139 @@
         </div>
       </div>
     </main>
+    <div v-if="!showFilters" class="filters-button" @click="openFilters()"><i class="fas fa-caret-right"></i></div>
+    <div v-if="showFilters" class="filters-button" @click="closeFilters()"><i class="fas fa-caret-left"></i></div>
   </div>
 </template>
+
+<script>
+  export default {
+    name: 'Home',
+    components: {
+
+    },
+    data(){
+      return {
+        showFilters: false,
+        products:[
+          {
+            id: 1,
+            name: 'Cruise Dual Analog',
+            price: 499,
+            mark: 4
+          },
+          {
+            id: 2,
+            name: 'Crown Summit Backpack',
+            price: 250,
+            mark: 3
+          },
+          {
+            id: 3,
+            name: 'Joust Duffle Bag',
+            price: 199,
+            mark: 2
+          },
+          {
+            id: 4,
+            name: 'Voyage Yoga Bag',
+            price: 549,
+            mark: 4
+          },
+          {
+            id: 5,
+            name: 'Joust Duffle Bag',
+            price: 129,
+            mark: 5
+          },
+          {
+            id: 6,
+            name: 'Cruise Dual Analog',
+            price: 499,
+            mark: 4
+          },
+          {
+            id: 7,
+            name: 'Crown Summit Backpack',
+            price: 250,
+            mark: 5
+          },
+          {
+            id: 8,
+            name: 'Joust Duffle Bag',
+            price: 199,
+            mark: 5
+          },
+          {
+            id: 9,
+            name: 'Voyage Yoga Bag',
+            price: 549,
+            mark: 4
+          },
+          {
+            id: 10,
+            name: 'Joust Duffle Bag',
+            price: 129,
+            mark: 5
+          },
+          {
+            id: 11,
+            name: 'Cruise Dual Analog',
+            price: 499,
+            mark: 4
+          },
+          {
+            id: 12,
+            name: 'Crown Summit Backpack',
+            price: 250,
+            mark: 5
+          },
+          {
+            id: 13,
+            name: 'Joust Duffle Bag',
+            price: 199,
+            mark: 5
+          },
+          {
+            id: 14,
+            name: 'Voyage Yoga Bag',
+            price: 549,
+            mark: 4
+          },
+          {
+            id: 15,
+            name: 'Joust Duffle Bag',
+            price: 129,
+            mark: 5
+          },
+          {
+            id: 16,
+            name: 'Voyage Yoga Bag',
+            price: 549,
+            mark: 4
+          },
+          {
+            id: 17,
+            name: 'Joust Duffle Bag',
+            price: 129,
+            mark: 5
+          },
+          {
+            id: 18,
+            name: 'Joust Duffle Bag',
+            price: 129,
+            mark: 5
+          }
+        ]
+      }
+    },
+    methods:{
+      openFilters() {
+        this.showFilters = true
+      },
+      closeFilters() {
+        this.showFilters = false
+      }
+    }
+  }
+</script>

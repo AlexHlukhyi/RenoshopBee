@@ -40,9 +40,15 @@
           <div class="small-tag-line">The best productions from us</div>
         </div>
         <div class="items wrapper">
-          <div class="product small" :key="product" v-for="product in bestSellers"><img/>
-            <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-              <h5>{{ product.name }}</h5></a>
+          <div class="product small" :key="product.id" v-for="product in bestSellers"><img/>
+            <div class="actions">
+              <a href="#" class="action"><i class="fas fa-shopping-cart"></i></a>
+              <a href="#" class="action"><i class="fas fa-heart"></i></a>
+              <a href="#" class="action"><i class="fas fa-retweet"></i></a>
+            </div>
+            <router-link to="/product">
+              <h5>{{ product.name }}</h5>
+            </router-link>
             <div class="price">{{ product.price }}</div>
             <div class="marks wrapper">
               <i :class="(product.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
@@ -84,9 +90,15 @@
           <div class="small-tag-line">Newest trends from top brands</div>
         </div>
         <div class="items wrapper">
-          <div class="product small" :key="product" v-for="product in featuredProducts"><img/>
-            <div class="actions"><a href="#" class="action"><i class="fas fa-shopping-cart"></i></a><a href="#" class="action"><i class="fas fa-heart"></i></a><a href="#" class="action"><i class="fas fa-retweet"></i></a></div><a href="#">
-              <h5>{{ product.name }}</h5></a>
+          <div class="product small" :key="product.id" v-for="product in featuredProducts"><img/>
+            <div class="actions">
+              <a href="#" class="action"><i class="fas fa-shopping-cart"></i></a>
+              <a href="#" class="action"><i class="fas fa-heart"></i></a>
+              <a href="#" class="action"><i class="fas fa-retweet"></i></a>
+            </div>
+            <router-link to="/product">
+              <h5>{{ product.name }}</h5>
+            </router-link>
             <div class="price">{{ product.price }}</div>
             <div class="marks wrapper">
               <i :class="(product.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
@@ -103,7 +115,7 @@
             <button class="button green-button">CONTACT US</button>
           </div>
         </div>
-        <div class="clients wrapper" :class="(activeModal) ? '' : ''">
+        <div class="clients wrapper">
           <a href="#"><img src="@/assets/img/clients/client-1.png"/></a>
           <a href="#"><img src="@/assets/img/clients/client-2.png"/></a>
           <a href="#"><img src="@/assets/img/clients/client-3.png"/></a>
@@ -123,26 +135,31 @@ export default {
     return {
       bestSellers:[
         {
+          id: 1,
           name: 'Cruise Dual Analog',
           price: 499,
           mark: 4
         },
         {
+          id: 2,
           name: 'Crown Summit Backpack',
           price: 250,
           mark: 3
         },
         {
+          id: 3,
           name: 'Joust Duffle Bag',
           price: 199,
           mark: 2
         },
         {
+          id: 4,
           name: 'Voyage Yoga Bag',
           price: 549,
           mark: 4
         },
         {
+          id: 5,
           name: 'Joust Duffle Bag',
           price: 129,
           mark: 5
@@ -150,61 +167,73 @@ export default {
       ],
       featuredProducts: [
         {
+          id: 6,
           name: 'Cruise Dual Analog',
           price: 499,
           mark: 4
         },
         {
+          id: 7,
           name: 'Crown Summit Backpack',
           price: 250,
           mark: 5
         },
         {
+          id: 8,
           name: 'Joust Duffle Bag',
           price: 199,
           mark: 5
         },
         {
+          id: 9,
           name: 'Voyage Yoga Bag',
           price: 549,
           mark: 4
         },
         {
+          id: 10,
           name: 'Joust Duffle Bag',
           price: 129,
           mark: 5
         },
         {
+          id: 11,
           name: 'Cruise Dual Analog',
           price: 499,
           mark: 4
         },
         {
+          id: 12,
           name: 'Crown Summit Backpack',
           price: 250,
           mark: 5
         },
         {
+          id: 13,
           name: 'Joust Duffle Bag',
           price: 199,
           mark: 5
         },
         {
+          id: 14,
           name: 'Voyage Yoga Bag',
           price: 549,
           mark: 4
         },
         {
+          id: 15,
           name: 'Joust Duffle Bag',
           price: 129,
           mark: 5
         },
         {
+          id: 16,
           name: 'Voyage Yoga Bag',
           price: 549,
           mark: 4
         },
         {
+          id: 17,
           name: 'Joust Duffle Bag',
           price: 129,
           mark: 5
@@ -212,9 +241,7 @@ export default {
       ]
     }
   },
-  methods:{
-
-  }
+  methods:{}
 }
 </script>
 

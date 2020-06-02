@@ -12,37 +12,43 @@
                 </div>
                 <div class="user-info wrapper">
                     <a href="#" data-toggle="modal" data-target="#sign-in" class="wrapper">
-                    <!--<i class='fas fa-user'></i>--><i class="fas fa-sign-in-alt"></i>
-                    <!--<div>Alex Hlukhyi</div>-->
-                    <div>Sign In</div>
+                        <!--<i class='fas fa-user'></i>-->
+                        <i class="fas fa-sign-in-alt"></i>
+                        <!--<div>Alex Hlukhyi</div>-->
+                        <div>Sign In</div>
                     </a>
                     <div>|</div>
                     <a href="#" data-toggle="modal" data-target="#sign-up" class="wrapper">
-                        <!--<i class='fas fa-sign-out-alt'></i>--><i class="fas fa-user-plus"></i>
+                        <!--<i class='fas fa-sign-out-alt'></i>-->
+                        <i class="fas fa-user-plus"></i>
                         <!--<div>Sign Out</div>-->
                         <div>Sign Up</div>
                     </a>
                 </div>
             </div>
             <div class="navigation-bar wrapper">
-                <a href="#" class="logo"><span class="bold">RENOSHOP</span><span>BEE</span></a>
-                <a href="#" class="logo short"><span class="bold">R</span><span>BEE</span></a>
+                <router-link to="/" class="logo">
+                    <span class="bold">RENOSHOP</span><span>BEE</span>
+                </router-link>
+                <router-link to="/" class="logo short">
+                    <span class="bold">R</span><span>BEE</span>
+                </router-link>
                 <div class="navigation wrapper">
                     <router-link to="/">HOME</router-link>
-                    <router-link to="/catalog">CATALOG</router-link>
-                    <a href="#">MEN</a>
-                    <a href="#">KIDS</a>
-                    <a href="#">JEWELLERY</a>
-                    <a href="#">ACCESSORIES</a>
+                    <router-link to="/catalog">WOMEN</router-link>
+                    <router-link to="/catalog">MEN</router-link>
+                    <router-link to="/catalog">KIDS</router-link>
+                    <router-link to="/catalog">JEWELLERY</router-link>
+                    <router-link to="/catalog">ACCESSORIES</router-link>
                 </div>
                 <div class="small-navigation wrapper">
-                    <a href="#" data-toggle="modal" data-target="#search">
+                    <a data-toggle="modal" data-target="#search">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="#">
+                    <router-link to="/cart">
                         <i class="fas fa-shopping-cart"><div class="items-count">3</div></i>
-                    </a>
-                    <a href="#" @click="openMenu()">
+                    </router-link>
+                    <a @click="openMenu()">
                         <i class="fas fa-bars"></i>
                     </a>
                 </div>
@@ -57,24 +63,36 @@
                     <div class="wrapper">
                         <p>We're confident we've provided all the best for you. Stay connect with us.</p>
                     </div>
-                    <div class="contacts wrapper"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
-                            class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a
-                            href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i
-                            class="fab fa-behance"></i></a></div>
+                    <div class="contacts wrapper">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="middle-sections">
                 <div class="container wrapper">
                     <div class="section">
-                        <h6>NAVIGATION</h6><a href="#">Home</a><a href="#">Catalog</a><a href="#">Search</a>
+                        <h6>NAVIGATION</h6>
+                        <router-link to="/">Home</router-link>
+                        <router-link to="/catalog">Catalog</router-link>
+                        <a data-toggle="modal" data-target="#search">Search</a>
                     </div>
                     <div class="section">
-                        <h6>CATEGORIES</h6><a href="#">Women</a><a href="#">Men</a><a href="#">Kids</a><a href="#">Jewellery</a><a
-                            href="#">Accessories</a>
+                        <h6>CATEGORIES</h6>
+                        <router-link to="/catalog">Women</router-link>
+                        <router-link to="/catalog">Men</router-link>
+                        <router-link to="/catalog">Kids</router-link>
+                        <router-link to="/catalog">Jewellery</router-link>
+                        <router-link to="/catalog">Accessories</router-link>
                     </div>
                     <div class="section">
-                        <h6>ACCOUNT</h6><a href="#">Sign In</a><a href="#">Sign Up</a><a href="#">My Homepage</a><a
-                            href="#">My Cart</a>
+                        <h6>ACCOUNT</h6>
+                        <a href="#" data-toggle="modal" data-target="#sign-in">Sign In</a>
+                        <a href="#" data-toggle="modal" data-target="#sign-up">Sign Up</a>
+                        <router-link to="/cart">My Cart</router-link>
                     </div>
                     <div class="section">
                         <h6>CONTACT INFO</h6>
@@ -99,12 +117,24 @@
             </div>
         </footer>
         <div id="overlay" class="overlay" :class="(menuVisible)?'active':''" @click="closeMenu()"></div>
-        <div id="menu" class="menu" :class="(menuVisible)?'active':''"><a href="#" class="logo"><span class="bold">RENOSHOP</span><span>BEE</span></a>
+        <div id="menu" class="menu" :class="(menuVisible)?'active':''">
+            <router-link to="/" class="logo" @click.native="closeMenu()">
+                <span class="bold">RENOSHOP</span><span>BEE</span>
+            </router-link>
             <hr/>
-            <div class="navigation wrapper"><a href="#">SIGN IN</a><a href="#">SIGN UP</a></div>
+            <div class="navigation wrapper">
+                <a href="#" data-toggle="modal" data-target="#sign-in" @click="closeMenu()">SIGN IN</a>
+                <a href="#" data-toggle="modal" data-target="#sign-up" @click="closeMenu()">SIGN UP</a>
+            </div>
             <hr/>
-            <div class="navigation wrapper"><a href="#">HOME</a><a href="#">WOMEN</a><a href="#">MEN</a><a
-                    href="#">KIDS</a><a href="#">JEWELLERY</a><a href="#">ACCESSORIES</a></div>
+            <div class="navigation wrapper">
+                <router-link to="/" @click.native="closeMenu()">HOME</router-link>
+                <router-link to="/catalog" @click.native="closeMenu()">WOMEN</router-link>
+                <router-link to="/catalog" @click.native="closeMenu()">MEN</router-link>
+                <router-link to="/catalog" @click.native="closeMenu()">KIDS</router-link>
+                <router-link to="/catalog" @click.native="closeMenu()">JEWELLERY</router-link>
+                <router-link to="/catalog" @click.native="closeMenu()">ACCESSORIES</router-link>
+            </div>
         </div>
         <div id="sign-in" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
             <div role="document" class="modal-dialog">
@@ -165,7 +195,7 @@
                         <input type="text" id="search-query" class="small"/>
                     </div>
                     <div class="modal-footer"><a href="#">
-                        <div class="button green-button small-button">SEARCH</div>
+                        <div class="button green-button small-button" data-dismiss="modal" @click="search()">SEARCH</div>
                     </a></div>
                 </div>
             </div>
@@ -187,6 +217,9 @@
             },
             closeMenu() {
 				this.menuVisible = false;
+            },
+            search() {
+				this.$router.push('search');
             }
         }
 	}
