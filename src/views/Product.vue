@@ -1,11 +1,11 @@
 <template>
-  <div class="product">
+  <div>
     <main>
       <div class="container">
         <ul class="breadcrumbs">
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/catalog">Catalog</router-link></li>
-          <li><router-link to="/product">Product</router-link></li>
+          <li><router-link to="/product">{{ product.name }}</router-link></li>
         </ul>
         <div class="product large">
           <div class="product-images"><img/>
