@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="product">
     <main>
       <div class="container">
         <ul class="breadcrumbs">
@@ -15,18 +15,18 @@
             <h5>{{ product.name }}</h5></a>
             <div class="price">{{ product.price }}</div>
             <div class="marks wrapper">
-              <i :class="(product.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
+              <i :class="(mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
             </div>
-            <p>{{ product.shortDescription }}</p>
+            <p>{{ product.short_description }}</p>
             <hr/>
             <div class="properties">
               <select class="medium">
                 <option disabled="disabled" selected="selected">Select Size</option>
-                <option :key="size" v-for="size in product.sizes">{{ size }}</option>
+                <option :key="size.id" v-for="size in product.sizes">{{ size.name }}</option>
               </select>
               <select class="medium">
                 <option disabled="disabled" selected="selected">Select Color</option>
-                <option :key="color" v-for="color in product.colors">{{ color }}</option>
+                <option :key="color.id" v-for="color in product.colors">{{ color.name }}</option>
               </select>
               <input type="number" placeholder="Select Quantity" class="medium" value="1"/>
             </div>
@@ -44,8 +44,8 @@
           <div class="product-reviews">
             <h5>Reviews</h5>
             <div class="reviews wrapper">
-              <p>{{ product.reviews.length }} reviews to Cruise Analog Dual</p>
-              <div class="review wrapper" v-bind:key="review.id" v-for="review in product.reviews"><img class="thumbnail"/>
+              <p>{{ reviews.length }} reviews to Cruise Analog Dual</p>
+              <div class="review wrapper" v-bind:key="review.id" v-for="review in reviews"><img class="thumbnail"/>
                 <div class="review-body">
                   <div class="wrapper">
                     <div class="marks wrapper">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="date">{{ review.date }}</div>
                   </div>
-                  <h5>{{ review.author }}</h5>
+                  <h5>{{ review.name }}</h5>
                   <p>{{ review.text }}</p>
                 </div>
               </div>
@@ -107,64 +107,29 @@
     components: {},
     data(){
       return {
-        product: {
-          id: 145,
-          name: 'Cruise Dual Analog',
-          price: 1349,
-          mark: 4,
-          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto corporis ex fugit illum perferendis, sunt vitae? Dolor iste nobis quae repudiandae sequi similique sint! Excepturi explicabo laboriosam quae voluptatum!',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut, eaque eos nihil reprehenderit vel. Accusantium aliquid expedita, harum ipsam itaque obcaecati provident quos repellat! Ducimus nihil nulla obcaecati praesentium! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut, eaque eos nihil reprehenderit vel. Accusantium aliquid expedita, harum ipsam itaque obcaecati provident quos repellat! Ducimus nihil nulla obcaecati praesentium! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut, eaque eos nihil reprehenderit vel. Accusantium aliquid expedita, harum ipsam itaque obcaecati provident quos repellat! Ducimus nihil nulla obcaecati praesentium!',
-          sizes: [
-            'S', 'XS', 'L'
-          ],
-          colors: [
-            'Black', 'White', 'Red'
-          ],
-          reviews: [
-            {
-              id: 1,
-              author: 'Alex Hlukhyi',
-              date: '16.12.2019',
-              mark: 4,
-              text: 'Looks pretty good. Gonna buy another products here.',
-            },
-            {
-              id: 2,
-              author: 'Daniel Kazantsev',
-              date: '12.11.2019',
-              mark: 5,
-              text: 'This one is great. I will definitely recommend your shop to my friends!',
-            }
-          ]
-        },
-        relatedProducts:[
-          {
-            id: 1,
-            name: 'Cruise Dual Analog',
-            price: 499,
-            mark: 4
-          },
-          {
-            id: 2,
-            name: 'Crown Summit Backpack',
-            price: 250,
-            mark: 3
-          },
-          {
-            id: 3,
-            name: 'Joust Duffle Bag',
-            price: 199,
-            mark: 2
-          },
-          {
-            id: 4,
-            name: 'Voyage Yoga Bag',
-            price: 549,
-            mark: 4
-          }
-        ]
+        product: null,
+        reviews: null,
+        relatedProducts: null,
+        mark: 0
       }
     },
-    methods:{}
+    methods:{
+      countMark() {
+        let marks = 0;
+        for (let review of this.reviews) {
+          marks += review.mark;
+        }
+        this.mark = marks/this.reviews.length;
+      }
+    },
+    mounted() {
+      this.axios.get('http://renoshop.bee/api/products/1').then(response => {
+          this.product = response.data.product;
+          this.reviews = response.data.reviews;
+          this.relatedProducts = response.data.relatedProducts;
+          this.countMark();
+        }
+      );
+    }
   }
 </script>

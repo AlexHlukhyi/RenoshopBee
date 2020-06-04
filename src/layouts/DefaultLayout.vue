@@ -33,13 +33,9 @@
                 <router-link to="/" class="logo short">
                     <span class="bold">R</span><span>BEE</span>
                 </router-link>
-                <div class="navigation wrapper">
+                <div v-if="categories" class="navigation wrapper">
                     <router-link to="/">HOME</router-link>
-                    <router-link to="/catalog">WOMEN</router-link>
-                    <router-link to="/catalog">MEN</router-link>
-                    <router-link to="/catalog">KIDS</router-link>
-                    <router-link to="/catalog">JEWELLERY</router-link>
-                    <router-link to="/catalog">ACCESSORIES</router-link>
+                    <router-link :to="'/categories/' + category.id + '/products'" v-bind:key="category.id" v-for="category in categories">{{ category.name.toUpperCase() }}</router-link>
                 </div>
                 <div class="small-navigation wrapper">
                     <a data-toggle="modal" data-target="#search">
@@ -82,11 +78,7 @@
                     </div>
                     <div class="section">
                         <h6>CATEGORIES</h6>
-                        <router-link to="/catalog">Women</router-link>
-                        <router-link to="/catalog">Men</router-link>
-                        <router-link to="/catalog">Kids</router-link>
-                        <router-link to="/catalog">Jewellery</router-link>
-                        <router-link to="/catalog">Accessories</router-link>
+                        <router-link :to="'/categories/' + category.id + '/products'" v-bind:key="category.id" v-for="category in categories">{{ category.name }}</router-link>
                     </div>
                     <div class="section">
                         <h6>ACCOUNT</h6>
@@ -204,25 +196,33 @@
 </template>
 
 <script>
-	export default {
-		name: "DefaultLayout",
-		data(){
-			return {
-                menuVisible: false
-			}
-		},
-        methods: {
-			openMenu() {
-				this.menuVisible = true;
-            },
-            closeMenu() {
-				this.menuVisible = false;
-            },
-            search() {
-				this.$router.push('search');
-            }
-        }
-	}
+  export default {
+    name: "DefaultLayout",
+    data() {
+      return {
+        menuVisible: false,
+        categories: null
+      }
+    },
+    methods: {
+      openMenu() {
+        this.menuVisible = true;
+      },
+      closeMenu() {
+        this.menuVisible = false;
+      },
+      search() {
+        this.$router.push('search');
+      }
+    },
+    mounted() {
+      this.axios.get('http://renoshop.bee/api/categories').then(
+        response => (
+          this.categories = response.data.categories
+        )
+      );
+    }
+  }
 </script>
 
 <style scoped>

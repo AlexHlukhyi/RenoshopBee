@@ -6,8 +6,11 @@ import store from './store'
 import 'bootstrap'
 import '@/assets/css/bootstrap.min.css'
 import '@/assets/css/main.min.css'
+import VueAxios from 'vue-axios'
+import axios from 'axios'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.use(VueAxios, axios);
 
 new Vue({
   router,
