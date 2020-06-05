@@ -67,11 +67,11 @@
                   <a href="#" class="action"><i class="fas fa-heart"></i></a>
                   <a href="#" class="action"><i class="fas fa-retweet"></i></a>
                 </div>
-                <router-link to="/product">
+                <router-link :to="'/product/' + product.id">
                   <h5>{{ product.name }}</h5>
                 </router-link>
                 <div class="price">{{ product.price }}</div>
-                <div class="marks wrapper">
+                <div v-if="product.mark" class="marks wrapper">
                   <i :class="(product.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5"></i>
                 </div>
               </div>
@@ -103,116 +103,12 @@
     data(){
       return {
         showFilters: false,
-        products:[
-          {
-            id: 1,
-            name: 'Cruise Dual Analog',
-            price: 499,
-            mark: 4
-          },
-          {
-            id: 2,
-            name: 'Crown Summit Backpack',
-            price: 250,
-            mark: 3
-          },
-          {
-            id: 3,
-            name: 'Joust Duffle Bag',
-            price: 199,
-            mark: 2
-          },
-          {
-            id: 4,
-            name: 'Voyage Yoga Bag',
-            price: 549,
-            mark: 4
-          },
-          {
-            id: 5,
-            name: 'Joust Duffle Bag',
-            price: 129,
-            mark: 5
-          },
-          {
-            id: 6,
-            name: 'Cruise Dual Analog',
-            price: 499,
-            mark: 4
-          },
-          {
-            id: 7,
-            name: 'Crown Summit Backpack',
-            price: 250,
-            mark: 5
-          },
-          {
-            id: 8,
-            name: 'Joust Duffle Bag',
-            price: 199,
-            mark: 5
-          },
-          {
-            id: 9,
-            name: 'Voyage Yoga Bag',
-            price: 549,
-            mark: 4
-          },
-          {
-            id: 10,
-            name: 'Joust Duffle Bag',
-            price: 129,
-            mark: 5
-          },
-          {
-            id: 11,
-            name: 'Cruise Dual Analog',
-            price: 499,
-            mark: 4
-          },
-          {
-            id: 12,
-            name: 'Crown Summit Backpack',
-            price: 250,
-            mark: 5
-          },
-          {
-            id: 13,
-            name: 'Joust Duffle Bag',
-            price: 199,
-            mark: 5
-          },
-          {
-            id: 14,
-            name: 'Voyage Yoga Bag',
-            price: 549,
-            mark: 4
-          },
-          {
-            id: 15,
-            name: 'Joust Duffle Bag',
-            price: 129,
-            mark: 5
-          },
-          {
-            id: 16,
-            name: 'Voyage Yoga Bag',
-            price: 549,
-            mark: 4
-          },
-          {
-            id: 17,
-            name: 'Joust Duffle Bag',
-            price: 129,
-            mark: 5
-          },
-          {
-            id: 18,
-            name: 'Joust Duffle Bag',
-            price: 129,
-            mark: 5
-          }
-        ]
+        products: null,
+      }
+    },
+    watch:{
+      $route() {
+        this.getProducts();
       }
     },
     methods:{
@@ -221,7 +117,15 @@
       },
       closeFilters() {
         this.showFilters = false
+      },
+      getProducts() {
+        this.axios.get('http://renoshop.bee/api/categories/' + this.$route.params.id + '/products').then(response => {
+          this.products = response.data.products;
+        });
       }
+    },
+    mounted() {
+      this.getProducts();
     }
   }
 </script>

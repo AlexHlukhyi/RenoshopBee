@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div>
     <main>
       <div class="container">
         <ul class="breadcrumbs">

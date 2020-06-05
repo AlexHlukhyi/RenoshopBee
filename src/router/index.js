@@ -7,21 +7,23 @@ const routes = [
   {
     path: '/',
     component: () => import('@/layouts/DefaultLayout.vue'),
-    children:[
+    children: [
       {
         path: '',
         component: () => import('@/views/Home.vue'),
       },
       {
-        path: 'catalog',
+        path: 'categories/:id/products',
         component: () => import('@/views/Catalog.vue'),
+        props: true
       },
       {
         path: 'search',
         component: () => import('@/views/Search.vue'),
+        props: (route) => ({ query: route.query.q })
       },
       {
-        path: 'product',
+        path: 'product/:id',
         component: () => import('@/views/Product.vue'),
       },
       {

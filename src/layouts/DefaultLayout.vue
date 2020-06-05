@@ -184,11 +184,13 @@
                     </div>
                     <div class="modal-body">
                         <p>Enter your search query here...</p>
-                        <input type="text" id="search-query" class="small"/>
+                        <input type="text" v-model="searchQuery" class="small"/>
                     </div>
-                    <div class="modal-footer"><a href="#">
-                        <div class="button green-button small-button" data-dismiss="modal" @click="search()">SEARCH</div>
-                    </a></div>
+                    <div class="modal-footer">
+                        <a href="#">
+                            <div class="button green-button small-button" :data-dismiss="(searchQuery)?'modal':'undefined'" @click="search()">SEARCH</div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -201,7 +203,8 @@
     data() {
       return {
         menuVisible: false,
-        categories: null
+        categories: null,
+        searchQuery: ''
       }
     },
     methods: {
@@ -212,7 +215,9 @@
         this.menuVisible = false;
       },
       search() {
-        this.$router.push('search');
+        if (this.searchQuery) {
+          this.$router.push('search?q=' + this.searchQuery);
+        }
       }
     },
     mounted() {

@@ -28,7 +28,7 @@
                 <option disabled="disabled" selected="selected">Select Color</option>
                 <option :key="color.id" v-for="color in product.colors">{{ color.name }}</option>
               </select>
-              <input type="number" placeholder="Select Quantity" class="medium" value="1"/>
+              <input type="number" placeholder="Select Quantity" class="medium" min="1" max="100" value="1"/>
             </div>
             <div class="actions">
               <a href="#" class="action"><i class="fas fa-shopping-cart"></i></a>
@@ -45,7 +45,7 @@
             <h5>Reviews</h5>
             <div class="reviews wrapper">
               <p>{{ reviews.length }} reviews to Cruise Analog Dual</p>
-              <div class="review wrapper" v-bind:key="review.id" v-for="review in reviews"><img class="thumbnail"/>
+              <div class="review wrapper" v-bind:key="review.id" v-for="review in reviews.slice(0, 6)"><img class="thumbnail"/>
                 <div class="review-body">
                   <div class="wrapper">
                     <div class="marks wrapper">
@@ -85,7 +85,7 @@
                   <a href="#" class="action"><i class="fas fa-heart"></i></a>
                   <a href="#" class="action"><i class="fas fa-retweet"></i></a>
                 </div>
-                <router-link to="/product">
+                <router-link :to="'/product/' + product.id">
                   <h5>{{ product.name }}</h5>
                 </router-link>
                 <div class="price">{{ product.price }}</div>
@@ -113,6 +113,11 @@
         mark: 0
       }
     },
+    watch:{
+      $route() {
+        this.getProduct();
+      }
+    },
     methods:{
       countMark() {
         let marks = 0;
@@ -120,16 +125,18 @@
           marks += review.mark;
         }
         this.mark = marks/this.reviews.length;
-      }
-    },
-    mounted() {
-      this.axios.get('http://renoshop.bee/api/products/1').then(response => {
+      },
+      getProduct() {
+        this.axios.get('http://renoshop.bee/api/products/' + this.$route.params.id).then(response => {
           this.product = response.data.product;
           this.reviews = response.data.reviews;
           this.relatedProducts = response.data.relatedProducts;
           this.countMark();
-        }
-      );
+        });
+      }
+    },
+    mounted() {
+      this.getProduct();
     }
   }
 </script>
