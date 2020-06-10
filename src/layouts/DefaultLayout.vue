@@ -121,11 +121,7 @@
             <hr/>
             <div class="navigation wrapper">
                 <router-link to="/" @click.native="closeMenu()">HOME</router-link>
-                <router-link to="/catalog" @click.native="closeMenu()">WOMEN</router-link>
-                <router-link to="/catalog" @click.native="closeMenu()">MEN</router-link>
-                <router-link to="/catalog" @click.native="closeMenu()">KIDS</router-link>
-                <router-link to="/catalog" @click.native="closeMenu()">JEWELLERY</router-link>
-                <router-link to="/catalog" @click.native="closeMenu()">ACCESSORIES</router-link>
+                <router-link :to="'/categories/' + category.id + '/products'" v-bind:key="category.id" v-for="category in categories" @click.native="closeMenu()">{{ category.name.toUpperCase() }}</router-link>
             </div>
         </div>
         <div id="sign-in" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -138,16 +134,16 @@
                     </div>
                     <div class="modal-body">
                         <p>Enter your credentials to sign in.</p>
-                        <input type="text" id="sign-in-email" placeholder="E-mail" class="small wrong"/>
+                        <input type="text" v-model="signIn.email" placeholder="E-mail" class="small wrong"/>
                         <p class="error">Wrong e-mail!</p>
-                        <input type="text" id="sign-in-password" placeholder="Password" class="small"/>
+                        <input type="password" v-model="signIn.password" placeholder="Password" class="small"/>
                         <p>
                             <input type="checkbox"/>Remember me?
                         </p>
                     </div>
-                    <div class="modal-footer"><a href="#">
-                        <div class="button green-button small-button">SIGN IN</div>
-                    </a></div>
+                    <div class="modal-footer">
+                        <button class="button green-button small-button" @click="login()">SIGN IN</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -161,16 +157,16 @@
                     </div>
                     <div class="modal-body">
                         <p>Enter your credentials to create a new account.</p>
-                        <input type="text" id="sign-up-first-name" placeholder="First Name" class="small"/>
-                        <input type="text" id="sign-up-last-name" placeholder="Last Name" class="small"/>
-                        <input type="text" id="sign-up-phone" placeholder="Phone" class="small"/>
-                        <input type="text" id="sign-up-email" placeholder="E-mail" class="small"/>
-                        <input type="text" id="sign-up-password" placeholder="Password" class="small"/>
-                        <input type="text" id="sign-up-repeat-password" placeholder="Repeat password" class="small"/>
+                        <input type="text" v-model="signUp.firstName" placeholder="First Name" class="small"/>
+                        <input type="text" v-model="signUp.lastName" placeholder="Last Name" class="small"/>
+                        <input type="text" v-model="signUp.phone" placeholder="Phone" class="small"/>
+                        <input type="text" v-model="signUp.email" placeholder="E-mail" class="small"/>
+                        <input type="text" v-model="signUp.password" placeholder="Password" class="small"/>
+                        <input type="text" v-model="signUp.repeatPassword" placeholder="Repeat password" class="small"/>
                     </div>
-                    <div class="modal-footer"><a href="#">
-                        <div class="button green-button small-button">SIGN UP</div>
-                    </a></div>
+                    <div class="modal-footer">
+                        <button class="button green-button small-button" @click="register()">SIGN UP</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,9 +183,7 @@
                         <input type="text" v-model="searchQuery" class="small"/>
                     </div>
                     <div class="modal-footer">
-                        <a href="#">
-                            <div class="button green-button small-button" :data-dismiss="(searchQuery)?'modal':'undefined'" @click="search()">SEARCH</div>
-                        </a>
+                        <button class="button green-button small-button" :data-dismiss="(searchQuery)?'modal':'undefined'" @click="search()">SEARCH</button>
                     </div>
                 </div>
             </div>
@@ -202,6 +196,18 @@
     name: "DefaultLayout",
     data() {
       return {
+        signIn: {
+          email: '',
+          password: ''
+        },
+        signUp: {
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+          password: '',
+          repeatPassword: ''
+        },
         menuVisible: false,
         categories: null,
         searchQuery: ''
@@ -214,18 +220,36 @@
       closeMenu() {
         this.menuVisible = false;
       },
+      getCategories() {
+        this.axios.get('http://renoshop.bee/api/categories').then(
+          response => (
+            this.categories = response.data.categories
+          )
+        );
+      },
       search() {
         if (this.searchQuery) {
           this.$router.push('search?q=' + this.searchQuery);
         }
-      }
+      },
+      login() {
+        let query = {
+          'email': this.signIn.email,
+          'password': this.signIn.password
+        };
+        console.log(query);
+        this.axios.post('http://renoshop.bee/api/auth/login', query)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
+      register() {}
     },
     mounted() {
-      this.axios.get('http://renoshop.bee/api/categories').then(
-        response => (
-          this.categories = response.data.categories
-        )
-      );
+      this.getCategories();
     }
   }
 </script>
