@@ -1,25 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: localStorage.getItem('user-token') || ''
+    token: localStorage.getItem('user-token') || '',
+    user: null
   },
   mutations: {
-    saveToken: (state, token) => {
-      state.token = token;
+    setToken: (state, payload) => {
+      state.token = payload.token;
+    },
+    setUser: (state, payload) => {
+      state.user = payload.user;
+    },
+    logout: (state) => {
+      state.token = '';
+      state.user = null;
     }
   },
-  actions: {
-    logout: ({commit, dispatch}) => {
-      return new Promise((resolve, reject) => {
-        localStorage.removeItem('user-token');
-        resolve();
-      })
-    }},
+  actions: {},
   getters: {
-    isAuthenticated: state => state.token
+    user: state => {
+      return state.user
+    },
+    token: state => {
+      return state.token
+    }
   }
 })

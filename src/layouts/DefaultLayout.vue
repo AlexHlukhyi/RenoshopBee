@@ -10,19 +10,26 @@
                         <div>info@company.com</div>
                     </a>
                 </div>
-                <div class="user-info wrapper">
-                    <a href="#" data-toggle="modal" data-target="#sign-in" class="wrapper">
-                        <!--<i class='fas fa-user'></i>-->
+                <div v-if="!user" class="user-info wrapper">
+                    <router-link to="/login" class="wrapper">
                         <i class="fas fa-sign-in-alt"></i>
-                        <!--<div>Alex Hlukhyi</div>-->
                         <div>Sign In</div>
+                    </router-link>
+                    <div>|</div>
+                    <router-link to="/register" class="wrapper">
+                        <i class='fas fa-sign-out-alt'></i>
+                        <div>Sign Up</div>
+                    </router-link>
+                </div>
+                <div v-else class="user-info wrapper">
+                    <a href="#" class="wrapper">
+                        <i class='fas fa-user'></i>
+                        <div>{{ user.name }}</div>
                     </a>
                     <div>|</div>
-                    <a href="#" data-toggle="modal" data-target="#sign-up" class="wrapper">
-                        <!--<i class='fas fa-sign-out-alt'></i>-->
-                        <i class="fas fa-user-plus"></i>
-                        <!--<div>Sign Out</div>-->
-                        <div>Sign Up</div>
+                    <a @click="logout()" class="wrapper">
+                        <i class='fas fa-sign-out-alt'></i>
+                        <div>Sign Out</div>
                     </a>
                 </div>
             </div>
@@ -42,7 +49,9 @@
                         <i class="fas fa-search"></i>
                     </a>
                     <router-link to="/cart">
-                        <i class="fas fa-shopping-cart"><div class="items-count">3</div></i>
+                        <i class="fas fa-shopping-cart">
+                            <div v-if="cartItems" class="items-count">{{ cartItems.length }}</div>
+                        </i>
                     </router-link>
                     <a @click="openMenu()">
                         <i class="fas fa-bars"></i>
@@ -124,52 +133,6 @@
                 <router-link :to="'/categories/' + category.id + '/products'" v-bind:key="category.id" v-for="category in categories" @click.native="closeMenu()">{{ category.name.toUpperCase() }}</router-link>
             </div>
         </div>
-        <div id="sign-in" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-            <div role="document" class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header"><a href="#" class="logo"><span
-                            class="bold">RENOSHOP</span><span>BEE</span></a>
-                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                                aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Enter your credentials to sign in.</p>
-                        <input type="text" v-model="signIn.email" placeholder="E-mail" class="small wrong"/>
-                        <p class="error">Wrong e-mail!</p>
-                        <input type="password" v-model="signIn.password" placeholder="Password" class="small"/>
-                        <p>
-                            <input type="checkbox"/>Remember me?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="button green-button small-button" @click="login()">SIGN IN</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="sign-up" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-            <div role="document" class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header"><a href="#" class="logo"><span
-                            class="bold">RENOSHOP</span><span>BEE</span></a>
-                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                                aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Enter your credentials to create a new account.</p>
-                        <input type="text" v-model="signUp.firstName" placeholder="First Name" class="small"/>
-                        <input type="text" v-model="signUp.lastName" placeholder="Last Name" class="small"/>
-                        <input type="text" v-model="signUp.phone" placeholder="Phone" class="small"/>
-                        <input type="text" v-model="signUp.email" placeholder="E-mail" class="small"/>
-                        <input type="text" v-model="signUp.password" placeholder="Password" class="small"/>
-                        <input type="text" v-model="signUp.repeatPassword" placeholder="Repeat password" class="small"/>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="button green-button small-button" @click="register()">SIGN UP</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div id="search" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
             <div role="document" class="modal-dialog">
                 <div class="modal-content">
@@ -196,21 +159,16 @@
     name: "DefaultLayout",
     data() {
       return {
-        signIn: {
-          email: '',
-          password: ''
-        },
-        signUp: {
-          firstName: '',
-          lastName: '',
-          phone: '',
-          email: '',
-          password: '',
-          repeatPassword: ''
-        },
+        user: null,
         menuVisible: false,
         categories: null,
+        cartItems: null,
         searchQuery: ''
+      }
+    },
+    watch:{
+      $route() {
+        this.getUser();
       }
     },
     methods: {
@@ -227,33 +185,45 @@
           )
         );
       },
+      getCartItems() {
+        this.axios.get('http://renoshop.bee/api/cart/' + this.user.id + '/items').then(response => {
+          this.cartItems = response.data.products;
+        });
+      },
       search() {
         if (this.searchQuery) {
           this.$router.push('search?q=' + this.searchQuery);
         }
       },
-      login() {
-        let query = {
-          'email': this.signIn.email,
-          'password': this.signIn.password
-        };
-        console.log(query);
-        this.axios.post('http://renoshop.bee/api/auth/login', query)
+      getUser() {
+        if(this.$store.getters.token) {
+          this.axios.post('http://renoshop.bee/api/auth/me')
           .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
+            let user = response.data;
+            this.$store.commit('setUser', {
+              user: user
+            });
+            this.user = user;
+            this.getCartItems();
+          }).catch((error) => {
             console.log(error);
           });
+        }
       },
-      register() {}
+      logout() {
+        localStorage.removeItem('user-token');
+        this.$store.commit('logout');
+        this.cartItems = null;
+        this.user = null;
+      }
     },
     mounted() {
       this.getCategories();
+      this.getUser();
     }
   }
 </script>
 
-<style scoped>
+<style>
 
 </style>

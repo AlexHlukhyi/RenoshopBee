@@ -20,18 +20,18 @@
             <p>{{ product.short_description }}</p>
             <hr/>
             <div class="properties">
-              <select class="medium">
-                <option disabled="disabled" selected="selected">Select Size</option>
-                <option :key="size.id" v-for="size in product.sizes">{{ size.name }}</option>
+              <select class="medium" v-model="size">
+                <option disabled value="">Select Size</option>
+                <option v-bind:value="size.id" :key="size.id" v-for="size in product.sizes">{{ size.name }}</option>
               </select>
-              <select class="medium">
-                <option disabled="disabled" selected="selected">Select Color</option>
-                <option :key="color.id" v-for="color in product.colors">{{ color.name }}</option>
+              <select class="medium" v-model="color">
+                <option disabled value="">Select Color</option>
+                <option v-bind:value="color.id" :key="color.id" v-for="color in product.colors">{{ color.name }}</option>
               </select>
-              <input type="number" placeholder="Select Quantity" class="medium" min="1" max="100" value="1"/>
+              <input type="number" placeholder="Select Quantity" class="medium" min="1" max="100" v-model="quantity"/>
             </div>
             <div class="actions">
-              <a href="#" class="action"><i class="fas fa-shopping-cart"></i></a>
+              <a href="#" @click.prevent="addToCart()" class="action"><i class="fas fa-shopping-cart"></i></a>
               <a href="#" class="action"><i class="fas fa-heart"></i></a>
               <a href="#" class="action"><i class="fas fa-retweet"></i></a>
             </div>
@@ -61,15 +61,11 @@
                 <h5>Add a review</h5>
                 <p>Your rating:</p>
                 <div class="marks wrapper">
-                  <i class="far fa-star"></i>
-                  <i class="far fa-star"></i>
-                  <i class="far fa-star"></i>
-                  <i class="far fa-star"></i>
-                  <i class="far fa-star"></i>
+                  <i :class="(newReview.mark < i)?'far fa-star':'fas fa-star'" :key="i" v-for="i in 5" @click="newReview.mark=i"></i>
                 </div>
                 <p>Your review:</p>
-                <textarea></textarea>
-                <button class="green-button small-button">SUBMIT</button>
+                <textarea v-model="newReview.text"></textarea>
+                <button class="green-button small-button" @click="addReview()">SUBMIT</button>
               </div>
             </div>
           </div>
@@ -108,9 +104,16 @@
     data(){
       return {
         product: null,
+        quantity: 1,
+        color: '',
+        size: '',
+        mark: 0,
         reviews: null,
-        relatedProducts: null,
-        mark: 0
+        newReview: {
+          mark: 0,
+          text: '',
+        },
+        relatedProducts: null
       }
     },
     watch:{
@@ -132,6 +135,37 @@
           this.reviews = response.data.reviews;
           this.relatedProducts = response.data.relatedProducts;
           this.countMark();
+        });
+      },
+      addToCart() {
+        let item = {
+          user: this.$parent.user.id,
+          product: this.product.id,
+          quantity: this.quantity,
+          size: this.size,
+          color: this.color
+        };
+        this.axios.post('http://renoshop.bee/api/cart/add', item).then(() => {
+          this.$parent.cartItems.push(item);
+          alert('Item added!')
+        }).catch((error) => {
+          console.log(error);
+        });
+      },
+      addReview() {
+        let review = {
+          user: this.$parent.user.id,
+          product: this.product.id,
+          mark: this.newReview.mark,
+          text: this.newReview.text,
+        };
+        this.axios.post('http://renoshop.bee/api/reviews/add', review).then(() => {
+          this.reviews.push(review);
+          this.newReview.mark = 0;
+          this.newReview.text = '';
+          this.countMark();
+        }).catch((error) => {
+          console.log(error);
         });
       }
     },

@@ -18,7 +18,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-bind:key="key" v-for="(product, key) in products">
+          <tr v-bind:key="product.id" v-for="(product, index) in $parent.cartItems">
             <th><img class="thumbnail"/>{{ product.name }}</th>
             <td>
               <div>Size: {{ product.size }}</div>
@@ -29,7 +29,9 @@
             </td>
             <td>${{ product.price }}</td>
             <td>${{ product.price * product.quantity }}
-              <button class="delete-button" @click="deleteProduct(key)"><i class="far fa-times-circle"></i></button>
+              <button class="delete-button" @click="deleteProduct(product.id, index)">
+                <i class="far fa-times-circle"></i>
+              </button>
             </td>
           </tr>
           <tr>
@@ -116,43 +118,13 @@
       return {
         subtotal: 0,
         coupon: 50,
-        total: 0,
-        products:[
-          {
-            name: 'Cruise Dual Analog',
-            size: 'S',
-            color: 'Black',
-            price: 499,
-            quantity: 1
-          },
-          {
-            name: 'Crown Summit Backpack',
-            size: 'XS',
-            color: 'White',
-            price: 250,
-            quantity: 2
-          },
-          {
-            name: 'Joust Duffle Bag',
-            size: 'L',
-            color: 'Brown',
-            price: 199,
-            quantity: 1
-          },
-          {
-            name: 'Voyage Yoga Bag',
-            size: 'XL',
-            color: 'Black',
-            price: 549,
-            quantity: 3
-          }
-        ]
+        total: 0
       }
     },
     methods:{
       updateTotals() {
         let subtotal = 0;
-        for(let product of this.products) {
+        for(let product of this.$parent.cartItems) {
           subtotal += product.price * product.quantity;
         }
         this.subtotal = subtotal;
@@ -167,13 +139,18 @@
       toCheckout() {
         this.$router.push('checkout');
       },
-      deleteProduct(key) {
-        this.products.splice(key, 1)
-        this.updateTotals();
+      deleteProduct(id, index) {
+        this.axios.post('http://renoshop.bee/api/cart/remove', {
+          id: id
+        })
+          .then(() => {
+            this.$parent.cartItems.splice(index, 1);
+            this.updateTotals();
+          }).catch((error) => {
+            console.log(error);
+          });
       }
     },
-    mounted() {
-      this.updateTotals();
-    }
+    mounted() {}
   }
 </script>

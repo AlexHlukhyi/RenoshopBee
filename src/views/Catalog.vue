@@ -111,7 +111,7 @@
         this.getProducts();
       }
     },
-    methods:{
+    methods: {
       openFilters() {
         this.showFilters = true
       },
