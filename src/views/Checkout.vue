@@ -12,29 +12,26 @@
           <div class="section">
             <h5>BILLING DETAILS</h5>
             <p class="important">First Name and Last Name</p>
-            <div class="form-group wrapper">
-              <input type="text" id="first-name" class="small"/>
-              <input type="text" id="last-name" class="small"/>
-            </div>
+            <input type="text" v-model="$parent.user.name" class="small"/>
             <p class="important">Country</p>
-            <select class="medium">
-              <option disabled="disabled" selected="selected">Country</option>
-              <option>Ukraine</option>
-              <option>USA</option>
-              <option>Canada</option>
+            <select class="medium" v-model="country">
+              <option disabled value="">Country</option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="USA">USA</option>
+              <option value="Canada">Canada</option>
             </select>
             <p>Company Name</p>
-            <input type="text" id="company" placeholder="First Name" class="small"/>
+            <input type="text" v-model="company" placeholder="Company Name" class="small"/>
             <p class="important">Address</p>
-            <input type="text" id="address" placeholder="Street address" class="small"/>
+            <input type="text" v-model="address" placeholder="Street address" class="small"/>
             <p>Postcode/Zip</p>
-            <input type="number" id="postcode" placeholder="Postcode/Zip" class="small"/>
+            <input type="text" v-model="postcode" placeholder="Postcode/Zip" class="small"/>
             <p class="important">Town/City</p>
-            <input type="text" id="town" placeholder="Town/City" class="small"/>
+            <input type="text" v-model="city" placeholder="Town/City" class="small"/>
             <p class="important">E-mail Address</p>
-            <input type="text" id="e-mail" class="small"/>
+            <input type="text" v-model="$parent.user.email" class="small"/>
             <p class="important">Phone</p>
-            <input type="text" id="phone" class="small"/>
+            <input type="text" v-model="$parent.user.phone" class="small"/>
           </div>
           <div class="section">
             <div class="calculation wrapper">
@@ -44,18 +41,14 @@
                 <p>Total</p>
               </div>
               <hr/>
-              <div class="wrapper">
-                <p>Casual men wearing cool shoe x 1</p>
-                <p>$120</p>
-              </div>
-              <div class="wrapper">
-                <p>Casual men wearing x 2</p>
-                <p>$280</p>
+              <div class="wrapper" v-bind:key="product.id" v-for="(product) in $parent.cartItems">
+                <p>{{ product.name }} x {{ product.quantity }}</p>
+                <p>${{ product.price * product.quantity}}</p>
               </div>
               <hr/>
               <div class="wrapper">
                 <p>Subtotal</p>
-                <p>$400</p>
+                <p>${{ subtotal }}</p>
               </div>
               <div class="wrapper">
                 <p>Shipping</p>
@@ -64,7 +57,7 @@
               <hr/>
               <div class="wrapper bold">
                 <p>Total</p>
-                <p>$400</p>
+                <p>${{ total }}</p>
               </div>
               <hr/>
               <div class="payment">
@@ -83,10 +76,10 @@
           </div>
         </div>
         <div class="order-controls wrapper">
-          <p>
+          <p v-if="$parent.user">
             <input type="checkbox"/>Create an account?
           </p>
-          <button class="green-button small-button">PROCEED TO CHECKOUT</button>
+          <button class="green-button small-button" @click="makeOrder()">MAKE ORDER</button>
         </div>
       </div>
     </main>
@@ -100,61 +93,40 @@
     data(){
       return {
         subtotal: 0,
-        coupon: 50,
         total: 0,
-        products:[
-          {
-            name: 'Cruise Dual Analog',
-            size: 'S',
-            color: 'Black',
-            price: 499,
-            quantity: 1
-          },
-          {
-            name: 'Crown Summit Backpack',
-            size: 'XS',
-            color: 'White',
-            price: 250,
-            quantity: 2
-          },
-          {
-            name: 'Joust Duffle Bag',
-            size: 'L',
-            color: 'Brown',
-            price: 199,
-            quantity: 1
-          },
-          {
-            name: 'Voyage Yoga Bag',
-            size: 'XL',
-            color: 'Black',
-            price: 549,
-            quantity: 3
-          }
-        ]
+        country: '',
+        company: '',
+        address: '',
+        postcode: '',
+        city: ''
       }
     },
     methods:{
       updateTotals() {
         let subtotal = 0;
-        for(let product of this.products) {
+        for(let product of this.$parent.cartItems) {
           subtotal += product.price * product.quantity;
         }
         this.subtotal = subtotal;
-        this.total = this.subtotal - this.coupon;
+        this.total = this.subtotal;
         if (this.total < 0) {
           this.total = 0;
         }
       },
-      toCatalog() {
-        this.$router.push('catalog');
-      },
-      toCheckout() {
-        this.$router.push('checkout');
-      },
-      deleteProduct(key) {
-        this.products.splice(key, 1)
-        this.updateTotals();
+      makeOrder() {
+        let order = {
+          user_id: this.$parent.user.id,
+          country: this.country,
+          city: this.city,
+          postcode: this.postcode,
+          address: this.address
+        };
+        console.log(order);
+        this.axios.post('http://renoshop.bee/api/orders/add', order).then(() => {
+          alert('Success!');
+        }).catch((error) => {
+          console.log(error);
+        });
       }
     },
     mounted() {

@@ -151,6 +151,8 @@
           });
       }
     },
-    mounted() {}
+    mounted() {
+      this.updateTotals();
+    }
   }
 </script>

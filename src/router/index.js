@@ -1,6 +1,16 @@
 import Vue from 'vue'
+// import axios from 'axios'
 import VueRouter from 'vue-router'
 import store from '../store/index.js'
+
+// axios.interceptors.response.use(response => {
+//   return response;
+// }, error => {
+//   localStorage.removeItem('user-token');
+//   store.commit('logout');
+//   router.push('/login');
+//   return error;
+// });
 
 Vue.use(VueRouter);
 
